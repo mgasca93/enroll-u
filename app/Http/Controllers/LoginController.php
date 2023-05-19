@@ -12,8 +12,6 @@ class LoginController extends Controller
             'password'  => 'required'
         ]);
 
-        var_dump( bcrypt(request('password')) );exit();
-
         if( Auth::attempt( $credentials ) ) :
             request()->session()->regenerate();
             return redirect()->route('home');

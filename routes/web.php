@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PagesController;
+use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,5 +18,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [PagesController::class, 'login'])->name('login');
-Route::post('/login', [LoginController::class, 'index'])->name('login.validate');
+Route::middleware([RedirectIfAuthenticated::class])->group( function(){
+    Route::get('/', [PagesController::class, 'login'])->name('login');
+    Route::post('/login', [LoginController::class, 'index'])->name('login.validate');
+});
+
+Route::middleware([Authenticate::class])->group(function(){
+    Route::get('/home', [DashboardController::class, 'index'])->name('home');
+    Route::post('/logout',[LoginController::class, 'logout'])->name('logout');
+});
+
