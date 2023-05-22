@@ -33,5 +33,7 @@ class administratorSeeder extends Seeder
             ],
         ];
         DB::table('administrators')->insert($this->administrators);
+        $customerId = DB::table('administrators')->latest('id')->first();
+        var_dump( $customerId );exit();
     }
 }
